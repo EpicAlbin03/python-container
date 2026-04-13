@@ -3,12 +3,14 @@ services:
     container_name: django-web
     # Build the image from the Dockerfile in the current directory
     build: .
+    # Production uses Gunicorn WSGI server (use daphne when using ASGI).
+    command: sh -c "uv run gunicorn core.wsgi --bind 0.0.0.0:8000"
+    restart: always
     # Host the Django application on port 8000
     ports:
       - "8000:8000"
     environment:
       # Include development dependencies when working locally
-      - UV_NO_DEV=0
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
       - DJANGO_DEBUG=${DJANGO_DEBUG:-False}
       - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
@@ -35,21 +37,6 @@ services:
     #   timeout: 5s
     #   retries: 10
 
-    develop:
-      # Create a `watch` configuration to update the app
-      # https://docs.docker.com/compose/file-watch/#compose-watch-versus-bind-mounts
-      watch:
-        # Sync the working directory with the `/app` directory in the container
-        - action: sync
-          path: .
-          target: /app
-          # Exclude the project virtual environment — it could be for a
-          # different platform in the container
-          ignore:
-            - .venv/
-        # Rebuild the image if dependencies change by checking uv.lock
-        - action: rebuild
-          path: ./uv.lock
   postgres:
     image: postgres:18
     container_name: postgres

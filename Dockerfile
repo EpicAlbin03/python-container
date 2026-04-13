@@ -52,5 +52,5 @@ USER nonroot
 EXPOSE 8000
 
 # Run the Django application by default
-CMD ["uv", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+# CMD ["uv", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
 

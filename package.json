@@ -5,7 +5,8 @@
     "tailwind": "npx @tailwindcss/cli -i ./input.css -o ./studentplatform/static/css/style.css --watch",
     "docker:up": "docker compose up --watch && bun run post-build",
     "docker:detached": "docker compose up -d && bun run post-build",
-    "docker:build": "docker compose up --build --watch && bun run post-build",
+    "docker:build": "docker compose up --build -d && bun run post-build",
+    "docker:prod": "docker compose -f docker-compose.yml up -d && bun run post-build",
     "post-build": "bun run ./post-build.sh",
     "docker:down": "docker compose down",
     "docker:remove": "docker compose down -v"
