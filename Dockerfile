@@ -42,15 +42,11 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # Place executables in the environment at the front of the path
 ENV PATH="/app/.venv/bin:$PATH"
 
-# Reset the entrypoint, don't invoke `uv`
-ENTRYPOINT []
-
 # Use the non-root user to run our application
 USER nonroot
 
 # Expose port 8000
 EXPOSE 8000
 
-# Run the Django application by default
-# CMD ["uv", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
-
+# Run migrations, etc.
+ENTRYPOINT ["/app/entrypoint.sh"]
