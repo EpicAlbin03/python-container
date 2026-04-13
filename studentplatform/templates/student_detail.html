@@ -1,0 +1,85 @@
+{% extends 'base.html' %} {% block title %}{{ student.name }}{% endblock %} {% block content %}
+<div class="space-y-6">
+  <div class="flex items-center justify-between">
+    <div class="space-y-2">
+      <a
+        href="{% url 'student_list' %}"
+        class="block text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        ← Back to list
+      </a>
+      <h1 class="text-3xl font-bold tracking-tight">{{ student.name }}</h1>
+    </div>
+    {% if user.is_staff %}
+    <div class="flex items-center gap-2">
+      <a
+        href="{% url 'edit_student' student.id %}"
+        class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors h-9 px-4 py-2 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground"
+      >
+        Edit
+      </a>
+      <c-alert-dialog>
+        <c-alert-dialog.trigger>
+          <c-button variant="destructive" type="button">Delete</c-button>
+        </c-alert-dialog.trigger>
+        <c-alert-dialog.content>
+          <c-alert-dialog.header>
+            <c-alert-dialog.title>Are you sure?</c-alert-dialog.title>
+            <c-alert-dialog.description>
+              This will permanently delete {{ student.name }}. This action cannot be undone.
+            </c-alert-dialog.description>
+          </c-alert-dialog.header>
+          <c-alert-dialog.footer>
+            <c-alert-dialog.cancel>Cancel</c-alert-dialog.cancel>
+            <form method="post" action="{% url 'delete_student' student.id %}">
+              {% csrf_token %}
+              <c-alert-dialog.action variant="destructive" type="submit"
+                >Delete</c-alert-dialog.action
+              >
+            </form>
+          </c-alert-dialog.footer>
+        </c-alert-dialog.content>
+      </c-alert-dialog>
+    </div>
+    {% endif %}
+  </div>
+
+  <c-table>
+    <c-table.header>
+      <c-table.row>
+        <c-table.head class="w-15">Id</c-table.head>
+        <c-table.head>Name</c-table.head>
+        <c-table.head>Email</c-table.head>
+        <c-table.head>Date of Birth</c-table.head>
+        <c-table.head>Grade</c-table.head>
+        <c-table.head>Status</c-table.head>
+        <c-table.head>Course</c-table.head>
+      </c-table.row>
+    </c-table.header>
+    <c-table.body>
+      <c-table.row>
+        <c-table.cell class="font-medium">{{ student.id }}</c-table.cell>
+        <c-table.cell>{{ student.name }}</c-table.cell>
+        <c-table.cell>{{ student.email }}</c-table.cell>
+        <c-table.cell>{{ student.date_of_birth }}</c-table.cell>
+        <c-table.cell>{{ student.grade }}</c-table.cell>
+        <c-table.cell>
+          {% if student.is_active %}
+          <c-badge>Active</c-badge>
+          {% else %}
+          <c-badge variant="secondary">Inactive</c-badge>
+          {% endif %}
+        </c-table.cell>
+        <c-table.cell>
+          <a
+            href="{% url 'course_detail' student.course.id %}"
+            class="text-sm hover:underline underline-offset-4"
+          >
+            {{ student.course.name }}
+          </a>
+        </c-table.cell>
+      </c-table.row>
+    </c-table.body>
+  </c-table>
+</div>
+{% endblock %}

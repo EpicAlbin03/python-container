@@ -1,0 +1,44 @@
+{% extends 'base.html' %} {% block title %}Courses{% endblock %} {% block content %}
+<div class="space-y-6">
+  <h1 class="text-3xl font-bold tracking-tight">Courses</h1>
+
+  {% if count == 0 %}
+  <div class="flex items-center justify-center rounded-md border border-dashed p-12">
+    <p class="text-sm text-muted-foreground">No courses yet</p>
+  </div>
+  {% else %}
+  <c-table>
+    <c-table.header>
+      <c-table.row>
+        <c-table.head class="w-15">Id</c-table.head>
+        <c-table.head>Code</c-table.head>
+        <c-table.head>Name</c-table.head>
+        <c-table.head>Students</c-table.head>
+      </c-table.row>
+    </c-table.header>
+    <c-table.body>
+      {% for course in courses %}
+      <c-table.row>
+        <c-table.cell class="font-medium">{{ course.id }}</c-table.cell>
+        <c-table.cell>
+          <c-badge variant="outline">{{ course.code }}</c-badge>
+        </c-table.cell>
+        <c-table.cell>
+          <a
+            href="{% url 'course_detail' course.id %}"
+            class="text-sm font-medium underline underline-offset-4 hover:text-primary"
+          >
+            {{ course.name }}
+          </a>
+        </c-table.cell>
+        <c-table.cell>
+          <c-badge variant="secondary">{{ course.students.count }}</c-badge>
+        </c-table.cell>
+      </c-table.row>
+      {% endfor %}
+    </c-table.body>
+    <c-table.caption>{{ count }} course{{ count|pluralize }} total</c-table.caption>
+  </c-table>
+  {% endif %}
+</div>
+{% endblock %}

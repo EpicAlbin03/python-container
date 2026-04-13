@@ -1,0 +1,48 @@
+{% extends 'base.html' %} {% block title %}Edit {{ student.name }}{% endblock %} {% block content %}
+<div class="max-w-sm space-y-6">
+  <div class="space-y-2">
+    <a
+      href="{% url 'student_detail' student.id %}"
+      class="block text-sm text-muted-foreground hover:text-foreground transition-colors"
+    >
+      ← Back to {{ student.name }}
+    </a>
+    <h1 class="text-3xl font-bold tracking-tight">Edit {{ student.name }}</h1>
+  </div>
+
+  <form action="" method="post" class="form-fields space-y-4">
+    {% csrf_token %} {% for field in form %}
+    <c-form.field>
+      {% if field.field.widget.input_type == 'checkbox' %}
+      <div class="flex items-center gap-2">
+        {{ field }}
+        <c-form.label for="{{ field.id_for_label }}" {% if field.errors %}error="true" {% endif %}>
+          {{ field.label }}
+        </c-form.label>
+      </div>
+      {% else %}
+      <c-form.label for="{{ field.id_for_label }}" {% if field.errors %}error="true" {% endif %}>
+        {{ field.label }}
+      </c-form.label>
+      {{ field }} {% endif %} {% for error in field.errors %}
+      <c-form.error>{{ error }}</c-form.error>
+      {% endfor %} {% if field.help_text %}
+      <c-form.description>{{ field.help_text }}</c-form.description>
+      {% endif %}
+    </c-form.field>
+    {% endfor %} {% if form.non_field_errors %} {% for error in form.non_field_errors %}
+    <c-form.error>{{ error }}</c-form.error>
+    {% endfor %} {% endif %}
+
+    <div class="flex items-center gap-3 pt-2">
+      <c-button type="submit">Save</c-button>
+      <a
+        href="{% url 'student_detail' student.id %}"
+        class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors h-9 px-4 py-2 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground"
+      >
+        Cancel
+      </a>
+    </div>
+  </form>
+</div>
+{% endblock %}

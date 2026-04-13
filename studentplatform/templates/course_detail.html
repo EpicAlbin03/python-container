@@ -1,0 +1,63 @@
+{% extends 'base.html' %} {% block title %}{{ course.name }}{% endblock %} {% block content %}
+<div class="space-y-6">
+  <div class="space-y-2">
+    <a
+      href="{% url 'course_list' %}"
+      class="block text-sm text-muted-foreground hover:text-foreground transition-colors"
+    >
+      ← Back to courses
+    </a>
+    <h1 class="text-3xl font-bold tracking-tight">
+      {{ course.name }}
+      <c-badge variant="outline" class="ml-2 align-middle text-base">{{ course.code }}</c-badge>
+    </h1>
+    {% if course.description %}
+    <p class="text-muted-foreground">{{ course.description }}</p>
+    {% endif %}
+  </div>
+
+  <c-separator />
+
+  <div class="space-y-4">
+    <h2 class="text-xl font-semibold tracking-tight">Enrolled Students</h2>
+
+    {% if students.count == 0 %}
+    <div class="flex items-center justify-center rounded-md border border-dashed p-12">
+      <p class="text-sm text-muted-foreground">No students enrolled yet</p>
+    </div>
+    {% else %}
+    <c-table>
+      <c-table.header>
+        <c-table.row>
+          <c-table.head class="w-15">Id</c-table.head>
+          <c-table.head>Name</c-table.head>
+          <c-table.head>Email</c-table.head>
+          <c-table.head>Grade</c-table.head>
+        </c-table.row>
+      </c-table.header>
+      <c-table.body>
+        {% for student in students %}
+        <c-table.row>
+          <c-table.cell class="font-medium">{{ student.id }}</c-table.cell>
+          <c-table.cell>
+            <a
+              href="{% url 'student_detail' student.id %}"
+              class="text-sm font-medium underline underline-offset-4 hover:text-primary"
+            >
+              {{ student.name }}
+            </a>
+          </c-table.cell>
+          <c-table.cell>{{ student.email }}</c-table.cell>
+          <c-table.cell>{{ student.grade }}</c-table.cell>
+        </c-table.row>
+        {% endfor %}
+      </c-table.body>
+      <c-table.caption
+        >{{ students|length }} student{{ students|length|pluralize }} enrolled
+        total</c-table.caption
+      >
+    </c-table>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

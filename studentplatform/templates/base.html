@@ -1,0 +1,64 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <title>{% block title %}Student Platform{% endblock %}</title>
+  </head>
+  <body class="min-h-screen bg-background text-foreground antialiased">
+    <header
+      class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60"
+    >
+      <div class="container mx-auto flex h-14 items-center px-6">
+        <c-navigation-menu>
+          <c-navigation-menu.list class="justify-start gap-0">
+            <c-navigation-menu.item>
+              <c-navigation-menu.link href="{% url 'home' %}">Home</c-navigation-menu.link>
+            </c-navigation-menu.item>
+            {% if user.is_authenticated %}
+            <c-navigation-menu.item>
+              <c-navigation-menu.link href="{% url 'student_list' %}">
+                Students
+              </c-navigation-menu.link>
+            </c-navigation-menu.item>
+            <c-navigation-menu.item>
+              <c-navigation-menu.link href="{% url 'course_list' %}">
+                Courses
+              </c-navigation-menu.link>
+            </c-navigation-menu.item>
+            {% if user.is_staff %}
+            <c-navigation-menu.item>
+              <c-navigation-menu.link href="/admin">Admin</c-navigation-menu.link>
+            </c-navigation-menu.item>
+            {% endif %}
+            <c-navigation-menu.item>
+              <c-navigation-menu.link href="{% url 'logout' %}">Logout</c-navigation-menu.link>
+            </c-navigation-menu.item>
+            {% else %}
+            <c-navigation-menu.item>
+              <c-navigation-menu.link href="{% url 'about' %}">About</c-navigation-menu.link>
+            </c-navigation-menu.item>
+            <c-navigation-menu.item>
+              <c-navigation-menu.link href="{% url 'login' %}">Login</c-navigation-menu.link>
+            </c-navigation-menu.item>
+            {% endif %}
+          </c-navigation-menu.list>
+        </c-navigation-menu>
+        {% if user.is_authenticated %}
+        <div class="ml-auto">
+          <c-badge variant="secondary">
+            {{ students_count }} Student{{ students_count|pluralize }}
+          </c-badge>
+          <c-badge> Hi, {{ user.username }}! </c-badge>
+        </div>
+        {% endif %}
+      </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8">{% block content %}{% endblock %}</main>
+  </body>
+</html>
