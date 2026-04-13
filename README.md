@@ -143,7 +143,7 @@ docker-compose exec web python manage.py createsuperuser
 
 ## Bonus Challenges
 
-- [ ] **Health check** — add a healthcheck in docker-compose to verify Django responds
+- [x] **Health check** — add a healthcheck in docker-compose to verify Django responds
 - [ ] **Static files** — add `RUN python manage.py collectstatic --noinput` to the Dockerfile
 - [ ] **Multiple environments** — create separate compose files for dev and production
 - [ ] **Rebuild speed** — optimise your Dockerfile layer ordering for fastest rebuilds
