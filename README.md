@@ -8,22 +8,22 @@ Containerize your student platform with **Docker** and switch from SQLite to **P
 
 ## What Changes From Yesterday
 
-| Yesterday (Phase 4) | Today (Phase 5) |
-|---|---|
-| Run with python manage.py runserver | Run inside a Docker container |
-| SQLite database (file-based) | PostgreSQL database (containerized) |
-| Dependencies installed manually | Dependencies packaged in the image |
-| Only works on your machine's setup | Runs identically on any machine with Docker |
+| Yesterday (Phase 4)                 | Today (Phase 5)                             |
+| ----------------------------------- | ------------------------------------------- |
+| Run with python manage.py runserver | Run inside a Docker container               |
+| SQLite database (file-based)        | PostgreSQL database (containerized)         |
+| Dependencies installed manually     | Dependencies packaged in the image          |
+| Only works on your machine's setup  | Runs identically on any machine with Docker |
 
 ---
 
 ## Files Provided
 
-| File | What to do |
-|---|---|
-| `Dockerfile` | Fill in the steps — comments guide you |
-| `.dockerignore` | Ready to use — keeps your image clean |
-| `.env.example` | Copy to `.env` and fill in values |
+| File                 | What to do                             |
+| -------------------- | -------------------------------------- |
+| `Dockerfile`         | Fill in the steps — comments guide you |
+| `.dockerignore`      | Ready to use — keeps your image clean  |
+| `.env.example`       | Copy to `.env` and fill in values      |
 | `docker-compose.yml` | Fill in the TODOs — comments guide you |
 
 ---
@@ -37,11 +37,13 @@ Open the provided `Dockerfile` and fill in each step. The comments tell you what
 ### 1.2 Set up environment variables
 
 Copy `.env.example` to `.env`:
+
 ```bash
 cp .env.example .env
 ```
 
 Update `settings.py` to read SECRET_KEY and DEBUG from environment:
+
 ```python
 import os
 
@@ -78,18 +80,18 @@ Replace the DATABASES section to use environment variables:
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'studentplatform'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'postgres'),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
+        'NAME': os.environ.get('POSTGRES_DB', 'studentplatform'),
+        'USER': os.environ.get('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'postgres'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
 }
 ```
 
 ### 2.3 Update .env
 
-Uncomment the DB_ variables in your `.env` file. Make sure `DB_HOST=db` — this matches the service name in docker-compose.yml.
+Uncomment the DB\_ variables in your `.env` file. Make sure `POSTGRES_HOST=db` — this matches the service name in docker-compose.yml.
 
 ### 2.4 Complete docker-compose.yml
 
@@ -106,6 +108,7 @@ docker-compose up --build
 ```
 
 In a separate terminal:
+
 ```bash
 docker-compose exec web python manage.py migrate
 docker-compose exec web python manage.py createsuperuser
@@ -122,19 +125,19 @@ docker-compose exec web python manage.py createsuperuser
 
 ## Checklist
 
-- [ ] Dockerfile completed and builds successfully
-- [ ] .dockerignore in place
-- [ ] .env file created from .env.example
-- [ ] settings.py reads SECRET_KEY and DEBUG from environment
-- [ ] App runs with `docker run` (SQLite version works)
-- [ ] psycopg2-binary added to requirements.txt
-- [ ] settings.py DATABASES updated for PostgreSQL with env vars
-- [ ] docker-compose.yml completed (db + web + volume)
-- [ ] `docker-compose up --build` works
-- [ ] Migrations run inside container
-- [ ] Superuser created inside container
-- [ ] Data persists across container restarts
-- [ ] .gitignore includes .env
+- [x] Dockerfile completed and builds successfully
+- [x] .dockerignore in place
+- [x] .env file created from .env.example
+- [x] settings.py reads SECRET_KEY and DEBUG from environment
+- [x] App runs with `docker run` (SQLite version works)
+- [x] psycopg2-binary added to requirements.txt
+- [x] settings.py DATABASES updated for PostgreSQL with env vars
+- [x] docker-compose.yml completed (db + web + volume)
+- [x] `docker-compose up --build` works
+- [x] Migrations run inside container
+- [x] Superuser created inside container
+- [x] Data persists across container restarts
+- [x] .gitignore includes .env
 
 ---
 

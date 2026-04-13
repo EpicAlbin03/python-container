@@ -1,0 +1,13 @@
+.git
+.tmp
+node_modules
+.venv
+.pytest_cache
+.ruff_cache
+Python
+db.sqlite3
+__pycache__
+.env
+*.log
+.DS_Store
+*.pyc

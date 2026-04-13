@@ -1,5 +1,5 @@
 [project]
-name = "django-auth"
+name = "python-container"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -8,22 +8,27 @@ dependencies = [
     "django>=6.0.3",
     "django-cors-headers>=4.9.0",
     "django-cotton>=2.6.2",
-    "django-stubs[compatible-mypy]>=6.0.2",
     "djangorestframework>=3.17.1",
     "djangorestframework-simplejwt>=5.5.1",
+    "psycopg2-binary>=2.9.11",
+]
+
+[dependency-groups]
+dev = [
+    "django-stubs[compatible-mypy]>=6.0.2",
     "djangorestframework-stubs[compatible-mypy]>=3.16.9",
     "poethepoet>=0.44.0",
 ]
 
 [tool.poe.tasks]
 dev = "python manage.py runserver"
-migrate = "python manage.py migrate"
 makemigrations = "python manage.py makemigrations"
+migrate = "python manage.py migrate"
 superuser = "python manage.py createsuperuser"
 lint = "ruff check ."
 format = "ruff format ."
 
-# * Settings from https://github.com/wemake-services/wemake-django-template
+# Settings from https://github.com/wemake-services/wemake-django-template
 
 [tool.uv]
 # Docs: https://docs.astral.sh/uv/reference/settings
