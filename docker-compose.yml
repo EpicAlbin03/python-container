@@ -18,9 +18,6 @@ services:
       - POSTGRES_USER=${POSTGRES_USER:-myuser}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password123}
       - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}
-    # Run as root during development so the environment is mutable
-    # Alternatively, you could set `UV_PROJECT_ENVIRONMENT` to a path owned by the non-root user
-    user: root
     depends_on:
       postgres:
         condition: service_healthy

@@ -8,6 +8,9 @@ services:
       - DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME}
       - DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL}
       - DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}
+    # Run as root during development so the environment is mutable
+    # Alternatively, you could set `UV_PROJECT_ENVIRONMENT` to a path owned by the non-root user
+    user: root
 
     develop:
       # Create a `watch` configuration to update the app
