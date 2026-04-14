@@ -15,10 +15,10 @@ class StudentListCreateAPIView(generics.ListCreateAPIView[Student]):
 
     # only admin users can create students
     def get_permissions(self):
-        if self.request.method == 'POST':
-            permission_classes = [IsAuthenticated, IsAdminUser]
-        else:
+        if self.request.method == 'GET':
             permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [IsAuthenticated, IsAdminUser]
         return [permission() for permission in permission_classes]
 
     # filter students by grade or active status
@@ -40,7 +40,13 @@ class StudentListCreateAPIView(generics.ListCreateAPIView[Student]):
 class StudentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView[Student]):
     queryset = Student.objects.select_related('course').all()
     serializer_class = StudentSerializer
-    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [IsAuthenticated, IsAdminUser]
+        return [permission() for permission in permission_classes]
 
 
 # GET, POST /courses/
@@ -49,10 +55,10 @@ class CourseListCreateAPIView(generics.ListCreateAPIView[Course]):
     serializer_class = CourseSerializer
 
     def get_permissions(self):
-        if self.request.method == 'POST':
-            permission_classes = [IsAuthenticated, IsAdminUser]
-        else:
+        if self.request.method == 'GET':
             permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [IsAuthenticated, IsAdminUser]
         return [permission() for permission in permission_classes]
 
 
@@ -60,7 +66,13 @@ class CourseListCreateAPIView(generics.ListCreateAPIView[Course]):
 class CourseRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView[Course]):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
-    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [IsAuthenticated, IsAdminUser]
+        return [permission() for permission in permission_classes]
 
 
 # GET /courses/<int:pk>/students/
