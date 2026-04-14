@@ -158,4 +158,4 @@ git commit -m "Session 7: Docker, Compose, PostgreSQL"
 git push
 ```
 
-**Next session**: HTML, CSS, JavaScript, and DOM manipulation.
+**Next session**: HTML, CSS, JavaScript, and DOM manipulation
